@@ -3,166 +3,256 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Бегущий человечек</title>
+    <title>Monobox — запуск сайтов и приложений доставки еды</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <style>
       :root {
         color-scheme: light;
-        font-family: "Inter", "Segoe UI", system-ui, sans-serif;
-        background-color: #0a0f1f;
+        font-family: "Manrope", system-ui, sans-serif;
+        background-color: #f8f8fb;
+        --accent: #6a3df0;
+        --accent-dark: #4b27b8;
+        --text: #111827;
+        --muted: #6b7280;
+        --card: #ffffff;
+        --border: rgba(17, 24, 39, 0.08);
+        --shadow: 0 22px 45px rgba(17, 24, 39, 0.08);
       }
       * {
         box-sizing: border-box;
       }
       body {
         margin: 0;
-        min-height: 100vh;
-        background: radial-gradient(circle at top, #1f2a44 0%, #0a0f1f 55%, #05070f 100%);
-        color: #f8fafc;
+        background: #f8f8fb;
+        color: var(--text);
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
       }
       .page {
         display: flex;
         flex-direction: column;
-        min-height: 100vh;
-        padding: 32px clamp(16px, 4vw, 48px) 48px;
-        gap: 32px;
+        gap: 96px;
+        padding: 32px clamp(16px, 4vw, 72px) 120px;
       }
       .topbar {
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 16px;
+        background: #ffffff;
+        border-radius: 22px;
+        padding: 18px 28px;
+        box-shadow: var(--shadow);
+        position: sticky;
+        top: 16px;
+        z-index: 5;
       }
-      .logo {
+      .brand {
         display: flex;
         align-items: center;
         gap: 12px;
         font-weight: 700;
         font-size: 20px;
-        letter-spacing: 0.4px;
+        letter-spacing: 0.2px;
       }
-      .logo-badge {
-        width: 44px;
-        height: 44px;
-        border-radius: 14px;
-        background: linear-gradient(135deg, #38bdf8, #6366f1);
+      .brand-badge {
+        width: 36px;
+        height: 36px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--accent), #8b5cf6);
         display: grid;
         place-items: center;
+        color: #fff;
         font-weight: 700;
-        color: #0a0f1f;
-        box-shadow: 0 12px 24px rgba(15, 23, 42, 0.45);
+      }
+      .cta {
+        border: none;
+        border-radius: 999px;
+        padding: 12px 24px;
+        font-weight: 600;
+        cursor: pointer;
+        background: var(--accent);
+        color: #fff;
+        box-shadow: 0 14px 30px rgba(106, 61, 240, 0.35);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+      .cta:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 18px 36px rgba(106, 61, 240, 0.4);
+      }
+      .section {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+      }
+      .section-title {
+        font-size: clamp(28px, 3vw, 42px);
+        margin: 0;
       }
       .hero {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        gap: 32px;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 40px;
         align-items: center;
       }
       .hero-card {
-        background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
-        border: 1px solid rgba(148, 163, 184, 0.2);
-        border-radius: 24px;
-        padding: 32px;
+        background: var(--card);
+        border-radius: 28px;
+        padding: 36px;
+        box-shadow: var(--shadow);
+        border: 1px solid var(--border);
         display: grid;
-        gap: 20px;
-        backdrop-filter: blur(12px);
-        box-shadow: 0 20px 45px rgba(15, 23, 42, 0.55);
+        gap: 24px;
       }
       .hero-card h1 {
-        font-size: clamp(28px, 3vw, 40px);
+        font-size: clamp(32px, 3.5vw, 46px);
         margin: 0;
+        line-height: 1.1;
       }
-      .hero-card p {
-        margin: 0;
-        color: #cbd5f5;
-        font-size: 15px;
-      }
-      .stat-grid {
+      .hero-meta {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        color: var(--muted);
+        font-size: 16px;
+      }
+      .pill-list {
+        display: flex;
+        flex-wrap: wrap;
         gap: 12px;
       }
-      .stat {
-        background: rgba(15, 23, 42, 0.55);
-        border: 1px solid rgba(99, 102, 241, 0.35);
-        border-radius: 16px;
-        padding: 14px 16px;
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-      }
-      .stat span {
-        font-size: 13px;
-        color: #94a3b8;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-      }
-      .stat strong {
-        font-size: 22px;
-      }
-      .primary-action {
-        justify-self: start;
-        padding: 12px 24px;
+      .pill {
+        background: #f0edff;
+        color: var(--accent-dark);
         border-radius: 999px;
-        border: none;
-        background: linear-gradient(135deg, #22c55e, #4ade80);
-        color: #04110a;
-        font-weight: 700;
-        cursor: pointer;
-        box-shadow: 0 12px 24px rgba(34, 197, 94, 0.35);
-      }
-      .primary-action:hover {
-        filter: brightness(1.05);
-      }
-      .game-shell {
-        background: rgba(15, 23, 42, 0.75);
-        border-radius: 28px;
-        border: 1px solid rgba(148, 163, 184, 0.2);
-        padding: 24px;
-        display: grid;
-        gap: 16px;
-        box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.2),
-          0 24px 50px rgba(2, 6, 23, 0.6);
-      }
-      canvas {
-        width: 100%;
-        height: auto;
-        border-radius: 20px;
-        background: linear-gradient(180deg, #38bdf8 0%, #0ea5e9 52%, #e2e8f0 52%);
-        box-shadow: inset 0 0 0 1px rgba(30, 41, 59, 0.4);
-      }
-      .hud {
-        display: flex;
-        gap: 16px;
-        flex-wrap: wrap;
-        color: #e2e8f0;
+        padding: 8px 14px;
+        font-weight: 600;
         font-size: 14px;
       }
-      .hud-pill {
-        background: rgba(15, 23, 42, 0.6);
-        border: 1px solid rgba(99, 102, 241, 0.3);
-        border-radius: 999px;
-        padding: 6px 14px;
-        display: inline-flex;
+      .hero-cta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
         align-items: center;
-        gap: 8px;
       }
-      .hint {
-        font-size: 13px;
-        color: #94a3b8;
+      .hero-cta span {
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 24px;
+      }
+      .card {
+        background: var(--card);
+        border-radius: 24px;
+        padding: 24px;
+        box-shadow: var(--shadow);
+        border: 1px solid var(--border);
+        display: grid;
+        gap: 12px;
+      }
+      .card h3 {
+        margin: 0;
+        font-size: 20px;
+      }
+      .list {
+        display: grid;
+        gap: 10px;
+        margin: 0;
+        padding-left: 18px;
+        color: var(--text);
+        line-height: 1.5;
+      }
+      .split {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 24px;
+      }
+      .accent {
+        background: var(--accent);
+        color: #fff;
+      }
+      .accent h3,
+      .accent p {
+        color: #fff;
+      }
+      .muted {
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .demo-layout {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 24px;
+      }
+      .demo-card {
+        background: linear-gradient(150deg, #ffffff 0%, #f5f3ff 100%);
+        border-radius: 24px;
+        padding: 24px;
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+        display: grid;
+        gap: 16px;
+      }
+      .faq-item {
+        display: grid;
+        gap: 10px;
+        padding: 20px 24px;
+        border-radius: 20px;
+        background: var(--card);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+      }
+      footer {
+        background: #0f0f18;
+        color: #f9fafb;
+        border-radius: 28px;
+        padding: 32px;
+        display: grid;
+        gap: 16px;
+      }
+      .footer-grid {
+        display: grid;
+        gap: 16px;
+      }
+      .reveal {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeUp 0.9s ease forwards;
+      }
+      .reveal.delay-1 {
+        animation-delay: 0.15s;
+      }
+      .reveal.delay-2 {
+        animation-delay: 0.3s;
+      }
+      .reveal.delay-3 {
+        animation-delay: 0.45s;
+      }
+      @keyframes fadeUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
       @media (max-width: 720px) {
-        .hero {
-          grid-template-columns: 1fr;
+        .topbar {
+          flex-direction: column;
+          align-items: flex-start;
         }
-        .hero-card,
-        .game-shell {
-          padding: 20px;
+        .hero-card {
+          padding: 24px;
+        }
+        .page {
+          gap: 64px;
         }
       }
     </style>
@@ -170,204 +260,220 @@
   <body>
     <div class="page">
       <header class="topbar">
-        <div class="logo">
-          <div class="logo-badge">Б</div>
-          <span>Бегущий человечек</span>
+        <div class="brand">
+          <div class="brand-badge">M</div>
+          Monobox
         </div>
-        <button class="primary-action" id="restart" type="button">Начать заново</button>
+        <button class="cta" type="button">Оставить заявку</button>
       </header>
 
-      <main class="hero">
-        <section class="hero-card">
-          <h1>Бегущий человечек</h1>
-          <p>Пробел — прыжок. Избегай кирпичей!</p>
-          <div class="stat-grid">
-            <div class="stat">
-              <span>Очки</span>
-              <strong id="score">0</strong>
-            </div>
-            <div class="stat">
-              <span>Рекорд</span>
-              <strong id="best">0</strong>
-            </div>
+      <section class="section hero" id="hero">
+        <div class="hero-card reveal">
+          <h1>🟣 Инструмент для запуска сайтов и приложений доставки еды</h1>
+          <div class="hero-meta">
+            <strong>Монобокс — сайт и приложение под ключ для доставки еды:</strong>
+            <span>Запуск за 14 дней</span>
+            <span>Тариф: от 10 рублей за заказ</span>
+            <span>Интеграционный платёж — 0 рублей</span>
           </div>
-        </section>
+          <div class="pill-list">
+            <div class="pill">Сайт</div>
+            <div class="pill">Приложение</div>
+            <div class="pill">Интеграции</div>
+            <div class="pill">Аналитика</div>
+          </div>
+          <div class="hero-cta">
+            <button class="cta" type="button">Хочу на презентацию</button>
+            <span>С получением презентации решения:</span>
+            <span><strong>monobox.app</strong></span>
+          </div>
+        </div>
+        <div class="hero-card reveal delay-1">
+          <h2 class="section-title">📌 Что входит в решение</h2>
+          <p class="muted">🔹 Основные модули</p>
+          <ul class="list">
+            <li>Сайт с личным кабинетом, историей заказов, профилем, авторизацией</li>
+            <li>Приложение для клиентов:</li>
+            <li>Push-уведомления</li>
+            <li>Удобный интерфейс</li>
+            <li>Система лояльности</li>
+            <li>Сквозная аналитика для оптимизации рекламных расходов</li>
+            <li>Гибкая настройка условий доставки</li>
+            <li>Интерфейс Call-центра</li>
+            <li>Интеграции с IIKO, R-Keeper, 1С, Amo-CRM и др.</li>
+            <li>Поддержка мультирегиональности</li>
+            <li>Приложение для курьеров</li>
+            <li>Неограниченное число филиалов</li>
+            <li>Админ-панель</li>
+            <li>Конструктор дизайна</li>
+            <li>QR-меню</li>
+            <li>Функции дополнительных продаж</li>
+            <li>(и другие опции)</li>
+          </ul>
+          <span class="muted">monobox.app</span>
+        </div>
+      </section>
 
-        <section class="game-shell">
-          <canvas id="game" width="800" height="260" aria-label="Игра про бегущего человечка"></canvas>
-          <div class="hud">
-            <div class="hud-pill">Очки: <span id="score-inline">0</span></div>
-            <div class="hud-pill">Рекорд: <span id="best-inline">0</span></div>
+      <section class="section" id="advantages">
+        <h2 class="section-title reveal">🎯 Важные преимущества решения</h2>
+        <div class="grid-3">
+          <div class="card reveal delay-1">
+            <h3>✔ Надёжность — 24/7 мониторинг инфраструктуры</h3>
+            <p class="muted">monobox.app</p>
           </div>
-          <div class="hint">Пробел — прыжок. Избегай кирпичей!</div>
-        </section>
-      </main>
+          <div class="card reveal delay-2">
+            <h3>✔ Фирменный стиль (цвета, логотипы)</h3>
+            <p class="muted">monobox.app</p>
+          </div>
+          <div class="card reveal delay-3">
+            <h3>✔ Высокая скорость работы даже при медленном интернете</h3>
+            <p class="muted">monobox.app</p>
+          </div>
+          <div class="card reveal delay-1">
+            <h3>✔ Удобство для клиента</h3>
+            <p class="muted">monobox.app</p>
+          </div>
+          <div class="card reveal delay-2">
+            <h3>✔ Стабильность без ручного вмешательства</h3>
+            <p class="muted">monobox.app</p>
+          </div>
+          <div class="card reveal delay-3">
+            <h3>✔ Доступная стоимость</h3>
+            <p class="muted">monobox.app</p>
+          </div>
+          <div class="card reveal delay-2">
+            <h3>✔ Основано на исследованиях и практике в маркетинге общепита (35 исследований)</h3>
+            <p class="muted">monobox.app</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="functionality">
+        <h2 class="section-title reveal">Функциональность</h2>
+        <div class="split">
+          <div class="card reveal delay-1">
+            <h3>🧠 О компании и опыте</h3>
+            <ul class="list">
+              <li>🔸 Более 11 лет в маркетинге</li>
+              <li>🔸 Команда экспертов</li>
+              <li>🔸 Работа на результат</li>
+              <li>🔸 Отслеживание ключевых бизнес-метрик, таких как:</li>
+              <li>ROMI</li>
+              <li>LTV</li>
+              <li>CPL</li>
+              <li>CPO</li>
+              <li>CAC</li>
+              <li>(показатели эффективности)</li>
+            </ul>
+            <span class="muted">monobox.app</span>
+          </div>
+          <div class="card accent reveal delay-2">
+            <h3>🎯 Для кого подходит Моnobox</h3>
+            <p>Решение подходит для:</p>
+            <ul class="list">
+              <li>Доставки еды</li>
+              <li>Ресторанов</li>
+              <li>Кафе</li>
+              <li>Доставки цветов</li>
+              <li>…и других бизнесов с активными онлайн-продажами.</li>
+            </ul>
+            <span class="muted" style="color: #e9d5ff;">monobox.app</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="demo">
+        <h2 class="section-title reveal">Демонстрация продукта</h2>
+        <div class="demo-layout">
+          <div class="demo-card reveal delay-1">
+            <h3>схема интерфейса</h3>
+            <p class="muted">
+              Карта пользовательского пути: экран витрины, карточка товара, корзина, оформление заказа,
+              статус доставки. Схема размещается справа от CTA.
+            </p>
+          </div>
+          <div class="demo-card reveal delay-2">
+            <h3>пример блоков</h3>
+            <p class="muted">
+              Блок «Преимущества» из карточек, блок «Функциональность» в виде колонок, блок «Тарифы» в
+              виде ценовых карточек с акцентной кнопкой.
+            </p>
+          </div>
+          <div class="demo-card reveal delay-3">
+            <h3>расположение кнопок</h3>
+            <p class="muted">
+              CTA в hero, повтор CTA после преимуществ и внутри тарифов. Кнопки контрастные, с тенью,
+              на чистом белом фоне.
+            </p>
+          </div>
+          <div class="demo-card reveal delay-1">
+            <h3>Рекомендации для графики</h3>
+            <ul class="list">
+              <li>Иллюстрации: интерфейсы доставки еды, кассы, курьеры, карты зон.</li>
+              <li>Иконки: скорость, стабильность, фирменный стиль, интеграции, аналитика.</li>
+              <li>Блок-фоны: мягкие градиенты, геометрические волны, светлые пятна.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="pricing">
+        <h2 class="section-title reveal">Тарифы</h2>
+        <div class="grid-3">
+          <div class="card reveal delay-1">
+            <h3>Запуск за 14 дней</h3>
+            <p class="muted">monobox.app</p>
+          </div>
+          <div class="card reveal delay-2">
+            <h3>Тариф: от 10 рублей за заказ</h3>
+            <p class="muted">monobox.app</p>
+          </div>
+          <div class="card reveal delay-3">
+            <h3>Интеграционный платёж — 0 рублей</h3>
+            <p class="muted">monobox.app</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="faq">
+        <h2 class="section-title reveal">FAQ</h2>
+        <div class="faq-item reveal delay-1">
+          <strong>❓ Вопросы и ответы (частые)</strong>
+        </div>
+        <div class="faq-item reveal delay-2">
+          <strong>С какими сервисами интегрируется?</strong>
+          <p>
+            IIKO, R-Keeper, Amo-CRM, 1С; при необходимости – доступен открытый API и помощь
+            интеграторов.
+          </p>
+          <span class="muted">monobox.app</span>
+        </div>
+        <div class="faq-item reveal delay-3">
+          <strong>Насколько надёжен сервис?</strong>
+          <p>Гарантируется нагрузочная устойчивость благодаря балансировке на нескольких серверах.</p>
+          <span class="muted">monobox.app</span>
+        </div>
+        <div class="faq-item reveal delay-1">
+          <strong>Работаете ли вы международно?</strong>
+          <p>Да, решение работает по всему миру; есть юрлица в РФ, Казахстане и Армении для удобства клиентов.</p>
+          <span class="muted">monobox.app</span>
+        </div>
+      </section>
+
+      <footer id="footer">
+        <div class="footer-grid">
+          <strong>📌 Юридическая информация</strong>
+          <span>ООО «Бизнес Платформа»</span>
+          <span>г. Москва, ул. Михайлова, д. 11, пом. 7</span>
+          <span>ИНН 9721212618 ОГРН 1237700544729</span>
+          <span>monobox.app</span>
+          <span>
+            Если тебе нужно полный текст политики конфиденциальности (privacy policy) или другой
+            конкретный раздел (например, FAQ полностью, юридические документы или переводы на
+            русский/англ.), скажи — я могу выдержки/переводы этих частей тоже привести.
+          </span>
+        </div>
+      </footer>
     </div>
-
-    <script>
-      const canvas = document.getElementById("game");
-      const ctx = canvas.getContext("2d");
-      const scoreEl = document.getElementById("score");
-      const bestEl = document.getElementById("best");
-      const scoreInlineEl = document.getElementById("score-inline");
-      const bestInlineEl = document.getElementById("best-inline");
-      const restartBtn = document.getElementById("restart");
-
-      const groundY = 210;
-      const player = {
-        x: 80,
-        y: groundY,
-        width: 28,
-        height: 40,
-        velocityY: 0,
-        gravity: 0.8,
-        jumpStrength: 12,
-        isGrounded: true,
-      };
-
-      let obstacles = [];
-      let score = 0;
-      let bestScore = 0;
-      let speed = 4;
-      let isRunning = true;
-      let spawnTimer = 0;
-
-      const resetGame = () => {
-        obstacles = [];
-        score = 0;
-        speed = 4;
-        spawnTimer = 0;
-        player.y = groundY;
-        player.velocityY = 0;
-        player.isGrounded = true;
-        isRunning = true;
-        updateScore();
-      };
-
-      const updateScore = () => {
-        const displayScore = Math.floor(score / 5);
-        scoreEl.textContent = displayScore;
-        scoreInlineEl.textContent = displayScore;
-        bestEl.textContent = bestScore;
-        bestInlineEl.textContent = bestScore;
-      };
-
-      const jump = () => {
-        if (!player.isGrounded || !isRunning) return;
-        player.velocityY = -player.jumpStrength;
-        player.isGrounded = false;
-      };
-
-      const spawnObstacle = () => {
-        const height = 30 + Math.random() * 30;
-        obstacles.push({
-          x: canvas.width + 20,
-          y: groundY + player.height - height,
-          width: 30 + Math.random() * 10,
-          height,
-        });
-      };
-
-      const update = () => {
-        if (!isRunning) return;
-        player.velocityY += player.gravity;
-        player.y += player.velocityY;
-        if (player.y >= groundY) {
-          player.y = groundY;
-          player.velocityY = 0;
-          player.isGrounded = true;
-        }
-
-        spawnTimer += 1;
-        if (spawnTimer > 80 + Math.random() * 60) {
-          spawnObstacle();
-          spawnTimer = 0;
-        }
-
-        obstacles.forEach((obstacle) => {
-          obstacle.x -= speed;
-        });
-        obstacles = obstacles.filter((obstacle) => obstacle.x + obstacle.width > 0);
-
-        speed = Math.min(9, speed + 0.0015);
-        score += 1;
-
-        checkCollisions();
-        updateScore();
-      };
-
-      const checkCollisions = () => {
-        for (const obstacle of obstacles) {
-          const hitX =
-            player.x < obstacle.x + obstacle.width &&
-            player.x + player.width > obstacle.x;
-          const hitY =
-            player.y < obstacle.y + obstacle.height &&
-            player.y + player.height > obstacle.y;
-          if (hitX && hitY) {
-            isRunning = false;
-            bestScore = Math.max(bestScore, Math.floor(score / 5));
-            break;
-          }
-        }
-      };
-
-      const drawPlayer = () => {
-        ctx.fillStyle = "#0f172a";
-        ctx.fillRect(player.x, player.y, player.width, player.height);
-        ctx.fillStyle = "#38bdf8";
-        ctx.fillRect(player.x + 6, player.y + 8, player.width - 12, 10);
-      };
-
-      const drawObstacles = () => {
-        ctx.fillStyle = "#b91c1c";
-        obstacles.forEach((obstacle) => {
-          ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
-          ctx.strokeStyle = "#7f1d1d";
-          ctx.strokeRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
-        });
-      };
-
-      const drawGround = () => {
-        ctx.fillStyle = "#cbd5f5";
-        ctx.fillRect(0, groundY + player.height, canvas.width, 20);
-      };
-
-      const drawGameOver = () => {
-        if (isRunning) return;
-        ctx.fillStyle = "rgba(15, 23, 42, 0.7)";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "#f8fafc";
-        ctx.font = "28px 'Inter', sans-serif";
-        ctx.textAlign = "center";
-        ctx.fillText("Столкновение!", canvas.width / 2, canvas.height / 2 - 10);
-        ctx.font = "16px 'Inter', sans-serif";
-        ctx.fillText("Нажми «Начать заново»", canvas.width / 2, canvas.height / 2 + 20);
-      };
-
-      const render = () => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        drawGround();
-        drawPlayer();
-        drawObstacles();
-        drawGameOver();
-      };
-
-      const loop = () => {
-        update();
-        render();
-        requestAnimationFrame(loop);
-      };
-
-      window.addEventListener("keydown", (event) => {
-        if (event.code === "Space") {
-          event.preventDefault();
-          jump();
-        }
-      });
-
-      restartBtn.addEventListener("click", resetGame);
-      loop();
-    </script>
   </body>
 </html>
