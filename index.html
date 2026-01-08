@@ -60,7 +60,7 @@
         <div>Рекорд: <span id="best">0</span></div>
       </div>
       <button id="restart" type="button">Начать заново</button>
-      <div class="hint">Удерживай пробел для высокого прыжка. Избегай мячиков!</div>
+      <div class="hint">Пробел — прыжок. Избегай кирпичей!</div>
     </main>
     <script>
       const canvas = document.getElementById("game");
@@ -73,8 +73,8 @@
       const player = {
         x: 80,
         y: groundY,
-        width: 38,
-        height: 44,
+        width: 28,
+        height: 40,
         velocityY: 0,
         gravity: 0.8,
         jumpStrength: 12,
@@ -87,57 +87,6 @@
       let speed = 4;
       let isRunning = true;
       let spawnTimer = 0;
-      let isJumpHeld = false;
-      let jumpHoldFrames = 0;
-      const maxJumpHoldFrames = 18;
-      const jumpHoldBoost = 0.6;
-
-      const makeSvgDataUrl = (svg) =>
-        `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
-
-      const babyImage = new Image();
-      babyImage.src = makeSvgDataUrl(`
-        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64">
-          <defs>
-            <linearGradient id="bg" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0" stop-color="#fde68a"/>
-              <stop offset="1" stop-color="#fca5a5"/>
-            </linearGradient>
-          </defs>
-          <rect width="64" height="64" rx="18" fill="url(#bg)"/>
-          <circle cx="32" cy="24" r="14" fill="#f8d6c1"/>
-          <circle cx="26" cy="22" r="2" fill="#1f2937"/>
-          <circle cx="38" cy="22" r="2" fill="#1f2937"/>
-          <path d="M26 28 Q32 32 38 28" stroke="#1f2937" stroke-width="2" fill="none"/>
-          <rect x="20" y="34" width="24" height="18" rx="6" fill="#93c5fd"/>
-          <rect x="24" y="40" width="16" height="10" rx="4" fill="#f8fafc"/>
-        </svg>
-      `);
-
-      const ballColors = ["#f97316", "#22c55e", "#38bdf8", "#e879f9", "#facc15"];
-      const ballImages = ballColors.map((color) => {
-        const img = new Image();
-        img.src = makeSvgDataUrl(`
-          <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64">
-            <defs>
-              <radialGradient id="shine" cx="30%" cy="30%" r="60%">
-                <stop offset="0" stop-color="#fff7" />
-                <stop offset="1" stop-color="${color}" />
-              </radialGradient>
-            </defs>
-            <circle cx="32" cy="32" r="26" fill="url(#shine)" stroke="#1f2937" stroke-width="3"/>
-            <circle cx="24" cy="24" r="6" fill="#ffffff88"/>
-          </svg>
-        `);
-        return img;
-      });
-
-      const trees = Array.from({ length: 6 }, (_, index) => ({
-        x: index * 160 + 80,
-        width: 80,
-        height: 70 + Math.random() * 40,
-        speed: 0.6 + Math.random() * 0.4,
-      }));
 
       const resetGame = () => {
         obstacles = [];
@@ -147,8 +96,6 @@
         player.y = groundY;
         player.velocityY = 0;
         player.isGrounded = true;
-        isJumpHeld = false;
-        jumpHoldFrames = 0;
         isRunning = true;
         scoreEl.textContent = score;
       };
@@ -157,18 +104,15 @@
         if (!player.isGrounded || !isRunning) return;
         player.velocityY = -player.jumpStrength;
         player.isGrounded = false;
-        jumpHoldFrames = 0;
       };
 
       const spawnObstacle = () => {
         const height = 30 + Math.random() * 30;
-        const colorIndex = Math.floor(Math.random() * ballImages.length);
         obstacles.push({
           x: canvas.width + 20,
           y: groundY + player.height - height,
-          width: height,
+          width: 30 + Math.random() * 10,
           height,
-          image: ballImages[colorIndex],
         });
       };
 
@@ -176,11 +120,6 @@
         if (!isRunning) return;
         player.velocityY += player.gravity;
         player.y += player.velocityY;
-        if (isJumpHeld && !player.isGrounded && jumpHoldFrames < maxJumpHoldFrames) {
-          player.velocityY -= jumpHoldBoost;
-          jumpHoldFrames += 1;
-        }
-
         if (player.y >= groundY) {
           player.y = groundY;
           player.velocityY = 0;
@@ -201,15 +140,6 @@
         speed = Math.min(9, speed + 0.0015);
         score += 1;
         scoreEl.textContent = Math.floor(score / 5);
-
-        trees.forEach((tree) => {
-          tree.x -= tree.speed;
-          if (tree.x + tree.width < 0) {
-            tree.x = canvas.width + 40;
-            tree.height = 70 + Math.random() * 40;
-            tree.speed = 0.6 + Math.random() * 0.4;
-          }
-        });
 
         checkCollisions();
       };
@@ -232,39 +162,18 @@
       };
 
       const drawPlayer = () => {
-        const imgX = player.x - 4;
-        const imgY = player.y - 4;
-        ctx.drawImage(babyImage, imgX, imgY, player.width + 8, player.height + 8);
+        ctx.fillStyle = "#0f172a";
+        ctx.fillRect(player.x, player.y, player.width, player.height);
+        ctx.fillStyle = "#38bdf8";
+        ctx.fillRect(player.x + 6, player.y + 8, player.width - 12, 10);
       };
 
       const drawObstacles = () => {
+        ctx.fillStyle = "#b91c1c";
         obstacles.forEach((obstacle) => {
-          ctx.drawImage(
-            obstacle.image,
-            obstacle.x,
-            obstacle.y,
-            obstacle.width,
-            obstacle.height
-          );
-        });
-      };
-
-      const drawTrees = () => {
-        trees.forEach((tree) => {
-          ctx.fillStyle = "#14532d";
-          ctx.beginPath();
-          ctx.moveTo(tree.x, groundY + player.height - tree.height);
-          ctx.lineTo(tree.x + tree.width / 2, groundY + player.height - tree.height - 40);
-          ctx.lineTo(tree.x + tree.width, groundY + player.height - tree.height);
-          ctx.closePath();
-          ctx.fill();
-          ctx.fillStyle = "#92400e";
-          ctx.fillRect(
-            tree.x + tree.width / 2 - 8,
-            groundY + player.height - tree.height,
-            16,
-            tree.height
-          );
+          ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+          ctx.strokeStyle = "#7f1d1d";
+          ctx.strokeRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
         });
       };
 
@@ -287,7 +196,6 @@
 
       const render = () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        drawTrees();
         drawGround();
         drawPlayer();
         drawObstacles();
@@ -303,18 +211,7 @@
       window.addEventListener("keydown", (event) => {
         if (event.code === "Space") {
           event.preventDefault();
-          if (!isJumpHeld) {
-            jump();
-          }
-          isJumpHeld = true;
-        }
-      });
-
-      window.addEventListener("keyup", (event) => {
-        if (event.code === "Space") {
-          event.preventDefault();
-          isJumpHeld = false;
-          jumpHoldFrames = maxJumpHoldFrames;
+          jump();
         }
       });
 
